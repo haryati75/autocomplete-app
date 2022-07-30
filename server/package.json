@@ -1,0 +1,27 @@
+{
+  "name": "autocomplete-server",
+  "version": "1.0.0",
+  "description": "autocomplete service for github search api",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "autocomplete-server"
+  },
+  "author": "haryati.h",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "octokit": "^2.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
