@@ -44,7 +44,7 @@ $yarn
 $yarn start
 $open localhost:4000
 ```
-### Client
+### Client Installation
 To run locally, follow these steps in terminal:
 ```
 $git clone {path_to_repository}
@@ -52,6 +52,10 @@ $yarn
 $yarn start
 $open localhost:3000
 ```
+
+### Keypass prompt at client:
+When prompted for Keypass at Client webpage http://localhost:3000,
+key in the same MYAPP_KEYPASS from the .env file.
 
 
 ## GitHub Search API : users
