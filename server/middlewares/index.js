@@ -6,7 +6,6 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
     const token = authHeaders.split(' ')[1];
     jwt.verify(token, process.env.TOKEN_SECRET, (err, keypass) => {
       if (err) {
-        console.log('Token Expired!')
         res.status(403).send({ message: 'Token expired. Request is not authorized.' })
       } else {
         next();

@@ -31,15 +31,14 @@ const searchQuery = async (req, res) => {
           url: item.url
         }
       })
-      const limit = response.headers['x-ratelimit-limit'];
       const remaining = response.headers['x-ratelimit-remaining'];
 
-      console.log('total_count: ', response.data.total_count);
-      console.log('rate-limit: '+ remaining +' / '+ limit);
+      console.log(`'${keywords}'`, 'searched, total_count: ', response.data.total_count, ', sent_count: ', sendToClientData.length);
+      console.log('rate-limit: ', remaining);
       console.log('resets in: ', new Date(parseInt(response.headers['x-ratelimit-reset']) * 1000))
       res.send({
         items : sendToClientData,
-        isLimitReached : limit === remaining,
+        isLimitReached : remaining === 0,
         resetTime : new Date(parseInt(response.headers['x-ratelimit-reset']) * 1000)
       });
     } else {

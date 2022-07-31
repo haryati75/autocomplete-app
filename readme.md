@@ -1,6 +1,6 @@
 # Autocomplete service using Github Search API
 
-A web app to perform autocomplete search on Github repositories:
+A web app to perform autocomplete search on Github popular users:
   1. frontend web page:
     - Search input page (must enter keypass first for authorisation)
     - Key in name of users that have at least N repositories and at least M followers
@@ -69,7 +69,7 @@ Query search on the following:
 ## Frontend feature
 - Technology: React
 - use Axios library (with AJAX technologies) to call REST APIs to Server
-- Autocomplete - using debounce and throttle
+- Autocomplete - using debounce and throttle to limit API calls during typing of input text
 - JWT Access Token 
 - Navigation between getting keypass and enable search 
 - port: 3000
@@ -79,7 +79,7 @@ Query search on the following:
 - Define API services
 - setup Github Personal Token 
 - Github Search API query (limit rate)
-- JWT token for session
+- JWT token for session -> re-key keypass if token expired
 - Environment variables (dotenv)
 - port: 4000
 
@@ -111,7 +111,7 @@ For client:
 ```
 
 
-## Github Authentication - web application flow (future enhancement)
+## Github Authentication via OAuth - web application flow (future enhancement)
 https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps
 ### Steps:
 1. Create New OAuth App in Github -> Settings -> Developer Settings -> OAuth Apps

@@ -12,13 +12,14 @@ function SearchForm (props) {
   const [ searches, setSearches ] = useState([]);
   
   useEffect(() => {
-    if (query.length > 0) {
-        if (query.endsWith(' ')) {
-          throttleAutocompleteHandler(query); // the eager one
-        } else {
-          debounceAutocompleteHandler(query);  // the patient one
-        }      
+    if (query && query.length > 0) {
+      if (query.endsWith(' ')) {
+        throttleAutocompleteHandler(query); // the eager one
+      } else {
+        debounceAutocompleteHandler(query);  // the patient one
+      }      
     }
+  // eslint-disable-next-line
   }, [query]);
   
   const changeQueryHandler = async (event) => {
@@ -34,13 +35,15 @@ function SearchForm (props) {
     }
   }
   
+  // eslint-disable-next-line
   const debounceAutocompleteHandler = useCallback(
-    debounce(1000, autocompleteSearch)
-    , [searches]);
+    debounce(500, autocompleteSearch) 
+    , []);
 
+  // eslint-disable-next-line
   const throttleAutocompleteHandler = useCallback(
     throttle(500, autocompleteSearch)
-    , [searches]);
+    , []);
 
   // stop debounced calls after unmounting
   useEffect(() => {
@@ -48,6 +51,7 @@ function SearchForm (props) {
       debounceAutocompleteHandler.cancel();
       throttleAutocompleteHandler.cancel();
     }
+  // eslint-disable-next-line
   },[]);
 
   const queryFetch = async (q) => {
@@ -60,7 +64,6 @@ function SearchForm (props) {
           query: q
         }
       })
-      console.log(response.data);
       if (response.data.isLimitReached) {
         props.onLimitReached(true);
       } else {
@@ -79,11 +82,13 @@ function SearchForm (props) {
   const submitHandler = async (event) => {
     event.preventDefault();
     const queryEntered = queryRef.current.value;
-    queryFetch(queryEntered).then((result) => {
-      props.onReset();
-      props.onSearchSuccess(result);
-      setSearches([]);
-    })
+    if (queryEntered.length > 0) {
+      queryFetch(queryEntered).then((result) => {
+        props.onReset();
+        props.onSearchSuccess(result);
+        setSearches([]);
+      })
+    }
   }
 
   const clearQueryHandler = (event) => {
