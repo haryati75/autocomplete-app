@@ -2,13 +2,12 @@
 
 A web app to perform autocomplete search on Github repositories:
   1. frontend web page:
-    - a Github OAuth page
-    - Search input page
+    - Search input page (must enter keypass first)
   2. server:
     - Provide REST API services to frontend
-      - to call OAuth token
+      - to generate jwt access token
       - to call Search with filter
-    - API calls to Github Search API
+    - API calls to Github Search API via octokit library
 
 ## GitHub Search API : users
 ```
@@ -22,24 +21,21 @@ Query search on the following:
 * At least M followers
 
 
-## Frontend
-- React
-- use Axios library (with AJAX technologies) to call REST APIs
-- Autocomplete - using debounce and/or throttle
-- Refresh/Expire Token 
-- Navigation between getting authentication and enable search 
+## Frontend feature
+- Technology: React
+- use Axios library (with AJAX technologies) to call REST APIs to Server
+- Autocomplete - using debounce and throttle
+- JWT Access Token 
+- Navigation between getting keypass and enable search 
 - port: 3000
 
-## Server
-- NodeJS / Express
+## Server feature
+- Technology: NodeJS / Express
 - Define API services
-- setup Github OAuth App Registration
-  - No personal token access method
-  - No Github App 
-- OAuth token call
+- setup Github Personal Token 
 - Github Search API query (limit rate)
 - JWT token for session
-- Environment variables: Port, JWT_Token_Secret
+- Environment variables: Port, JWT_Token_Secret, keypass
 - port: 4000
 
 
@@ -69,7 +65,7 @@ For client:
   yarn add axios
 ```
 
-# Github Authentication - web application flow
+# Github Authentication - web application flow (future enhancement)
 https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps
 ### Steps:
 1. Create New OAuth App in Github -> Settings -> Developer Settings -> OAuth Apps
