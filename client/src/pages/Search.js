@@ -6,9 +6,16 @@ import ResultList from "../components/search/ResultList";
 function SearchPage() {
   const history = useHistory();
   const [ loadedResults, setLoadedResults ] = useState([]);
+  const [ isEmptyResult, setIsEmptyResult ] = useState(false);
+  const [ isRateLimitReached, setIsRateLimitReached ] = useState(false);
 
   const loadResultHandler = (result) => {
     setLoadedResults(result);
+    if (result.length === 0) {
+      setIsEmptyResult(true);
+    } else {
+      setIsEmptyResult(false);
+    }
   }
 
   const expiredTokenHandler = (isExpired) => {
@@ -18,15 +25,26 @@ function SearchPage() {
     }
   }
 
+  const limitReachedHandler = (flag) => {
+    setIsRateLimitReached(flag);
+  }
+
   const resetHandler = () => {
     setLoadedResults([]);
+    setIsEmptyResult(false);
   }
 
   return (
     <section>
       <h1>GitHub Search API: users</h1>
       {loadedResults.length > 0 ? <p>Result count: {loadedResults.length}</p> : null}
-      <SearchForm onTokenExpired={expiredTokenHandler} onSearchSuccess={loadResultHandler} onReset={resetHandler}/>
+      <SearchForm 
+        onTokenExpired={expiredTokenHandler} 
+        onSearchSuccess={loadResultHandler} 
+        onLimitReached={limitReachedHandler}
+        onReset={resetHandler}/>
+      {isEmptyResult ? <h3>No users found with the criteria!</h3> : null}
+      {isRateLimitReached ? <h3>GitHub rate-limit reached! Wait a few seconds before next search.</h3> : null}
       <ResultList items={loadedResults}/>
     </section>
   );

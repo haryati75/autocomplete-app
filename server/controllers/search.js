@@ -31,13 +31,15 @@ const searchQuery = async (req, res) => {
           url: item.url
         }
       })
+      const limit = response.headers['x-ratelimit-limit'];
+      const remaining = response.headers['x-ratelimit-remaining'];
+
       console.log('total_count: ', response.data.total_count);
-      console.log('rate-limit: '+response.headers['x-ratelimit-remaining']+' / '+response.headers['x-ratelimit-limit']);
+      console.log('rate-limit: '+ remaining +' / '+ limit);
       console.log('resets in: ', new Date(parseInt(response.headers['x-ratelimit-reset']) * 1000))
       res.send({
         items : sendToClientData,
-        limit : response.headers['x-ratelimit-limit'],
-        remaining : response.headers['x-ratelimit-remaining'],
+        isLimitReached : limit === remaining,
         resetTime : new Date(parseInt(response.headers['x-ratelimit-reset']) * 1000)
       });
     } else {
@@ -51,12 +53,6 @@ const searchQuery = async (req, res) => {
   }
 }
 
-const debounceQuery = (req, res) => {
-  console.log("debounce: ", req.query.query);
-  res.send({ message: "returning debounce: "+req.query.query });
-}
-
 module.exports = {
-  searchQuery,
-  debounceQuery
+  searchQuery
 }

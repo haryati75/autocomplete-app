@@ -2,12 +2,57 @@
 
 A web app to perform autocomplete search on Github repositories:
   1. frontend web page:
-    - Search input page (must enter keypass first)
+    - Search input page (must enter keypass first for authorisation)
+    - Key in name of users that have at least N repositories and at least M followers
   2. server:
     - Provide REST API services to frontend
-      - to generate jwt access token
-      - to call Search with filter
     - API calls to Github Search API via octokit library
+
+## Installation
+
+### GitHub Account - Developer Settings
+Before server and client installation, create personal access token from GitHub:
+1. Login to GitHub
+2. Go to Account -> Developer Settings
+3. Go to Personal Access Token
+4. Create Personal Access Token
+5. Generate Token and copy it immediately and save (one-time display only at GitHub)
+6. Paste token to .env file as GH_PERSONAL_ACCESS_TOKEN
+
+
+### Token Secret for JWT
+1. https://randomkeygen.com/ => generate and copy keygen from here or other alternative password generator website
+2. Paste keygen to .env file as TOKEN_SECRET
+
+### Server Installation
+
+#### Server Environment variables 
+Create .env with the following variables filled:
+```
+PORT=
+GH_PERSONAL_ACCESS_TOKEN=
+MYAPP_KEYPASS=
+TOKEN_SECRET=
+```
+
+Note: MYAPP_KEYPASS is the password to access server from client's Authorise Page.
+
+To run locally, follow these steps in terminal:
+```
+$git clone {path_to_repository}
+$yarn 
+$yarn start
+$open localhost:4000
+```
+### Client
+To run locally, follow these steps in terminal:
+```
+$git clone {path_to_repository}
+$yarn 
+$yarn start
+$open localhost:3000
+```
+
 
 ## GitHub Search API : users
 ```
@@ -35,7 +80,7 @@ Query search on the following:
 - setup Github Personal Token 
 - Github Search API query (limit rate)
 - JWT token for session
-- Environment variables: Port, JWT_Token_Secret, keypass
+- Environment variables (dotenv)
 - port: 4000
 
 
@@ -65,7 +110,8 @@ For client:
   yarn add axios
 ```
 
-# Github Authentication - web application flow (future enhancement)
+
+## Github Authentication - web application flow (future enhancement)
 https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps
 ### Steps:
 1. Create New OAuth App in Github -> Settings -> Developer Settings -> OAuth Apps

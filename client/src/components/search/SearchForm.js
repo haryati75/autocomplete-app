@@ -14,10 +14,8 @@ function SearchForm (props) {
   useEffect(() => {
     if (query.length > 0) {
         if (query.endsWith(' ')) {
-          console.log('throttle search: ', query)
           throttleAutocompleteHandler(query); // the eager one
         } else {
-          console.log('debounce search: ', query)
           debounceAutocompleteHandler(query);  // the patient one
         }      
     }
@@ -38,7 +36,7 @@ function SearchForm (props) {
   
   const debounceAutocompleteHandler = useCallback(
     debounce(1000, autocompleteSearch)
-    , []);
+    , [searches]);
 
   const throttleAutocompleteHandler = useCallback(
     throttle(500, autocompleteSearch)
@@ -63,6 +61,11 @@ function SearchForm (props) {
         }
       })
       console.log(response.data);
+      if (response.data.isLimitReached) {
+        props.onLimitReached(true);
+      } else {
+        props.onLimitReached(false);
+      }
       return response.data.items;
     } catch (err) {
       if (err.response.status === 403) {
@@ -80,7 +83,6 @@ function SearchForm (props) {
       props.onReset();
       props.onSearchSuccess(result);
       setSearches([]);
-      setQuery('');
     })
   }
 

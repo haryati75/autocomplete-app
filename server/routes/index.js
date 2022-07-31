@@ -10,7 +10,5 @@ router.get("/", (req, res) => {
 });
 router.post("/auth", authControllers.authenticate);
 router.get("/search", checkIfAuthenticatedJWT, searchControllers.searchQuery);
-router.get("/debounce", checkIfAuthenticatedJWT, searchControllers.debounceQuery);
-
 
 module.exports = router;
