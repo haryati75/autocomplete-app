@@ -21,6 +21,7 @@ function SearchForm (props) {
         }
       })
       console.log(response.data)
+      props.onSearchSuccess(response.data.items);
     } catch (err) {
       if (err.response.status === 403) {
         props.onTokenExpired(true);
@@ -33,8 +34,12 @@ function SearchForm (props) {
     <Card>
       <form className={classes.form} onSubmit={submitHandler}>
         <div className={classes.control}>
-          <label htmlFor="query">Query</label>
-          <input type="text" required id="query" ref={queryRef}/>
+          <label htmlFor="query">Query: User Name with min 10 repos & 500 followers</label>
+          <input type="text" required 
+            placeholder='Type a user name here'
+            id="query" 
+            ref={queryRef}
+          />
         </div>
         <div className={classes.actions}>
           <button>Submit</button>

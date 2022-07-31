@@ -10,6 +10,18 @@ A web app to perform autocomplete search on Github repositories:
       - to call Search with filter
     - API calls to Github Search API
 
+## GitHub Search API : users
+```
+GET /search/users
+```
+https://docs.github.com/en/rest/search#search-users
+
+Query search on the following:
+* User Name
+* At least N repos
+* At least M followers
+
+
 ## Frontend
 - React
 - use Axios library (with AJAX technologies) to call REST APIs
