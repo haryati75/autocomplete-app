@@ -4,12 +4,13 @@ import Authorise from "../components/search/Authorise";
 
 function WelcomePage () {
   const history = useHistory();
-  const accessToken = localStorage.getItem('accessToken') || null;
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken') || null;
     if (accessToken) {
       history.replace('/search');
     }
+  // eslint-disable-next-line
   }, []);
 
   const authorisedHandler = (token) => {

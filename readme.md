@@ -10,6 +10,10 @@ A web app to perform autocomplete search on Github popular users:
 
 ## Installation
 
+### Pre-installed:
+* NodeJS v14
+* yarn or npm
+
 ### GitHub Account - Developer Settings
 Before server and client installation, create personal access token from GitHub:
 1. Login to GitHub
@@ -71,7 +75,7 @@ Query search on the following:
 
 
 ## Frontend feature
-- Technology: React
+- Technology: React v18
 - use Axios library (with AJAX technologies) to call REST APIs to Server
 - Autocomplete - using debounce and throttle to limit API calls during typing of input text
 - JWT Access Token 

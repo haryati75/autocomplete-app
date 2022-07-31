@@ -11,7 +11,7 @@ function SearchPage() {
 
   const loadResultHandler = (result) => {
     setLoadedResults(result);
-    if (result.length === 0) {
+    if (result && result.length === 0) {
       setIsEmptyResult(true);
     } else {
       setIsEmptyResult(false);
@@ -37,7 +37,7 @@ function SearchPage() {
   return (
     <section>
       <h1>GitHub Search API: users</h1>
-      {loadedResults.length > 0 ? <p>Result count: {loadedResults.length}</p> : null}
+      {loadedResults && loadedResults.length > 0 ? <p>Result count: {loadedResults.length}</p> : null}
       <SearchForm 
         onTokenExpired={expiredTokenHandler} 
         onSearchSuccess={loadResultHandler} 

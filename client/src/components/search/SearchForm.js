@@ -37,7 +37,7 @@ function SearchForm (props) {
   
   // eslint-disable-next-line
   const debounceAutocompleteHandler = useCallback(
-    debounce(500, autocompleteSearch) 
+    debounce(1000, autocompleteSearch) 
     , []);
 
   // eslint-disable-next-line
@@ -124,7 +124,7 @@ function SearchForm (props) {
             ref={queryRef}
           />
         </div>
-        {searches.length > 0 ? showList(searches) : null}
+        {searches && searches.length > 0 ? showList(searches) : null}
         <div className={classes.actions}>
           <button onClick={clearQueryHandler}>Clear All</button>
           <button onClick={submitHandler}>Search</button>
