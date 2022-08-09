@@ -44,11 +44,11 @@ const searchQuery = async (req, res) => {
     } else {
       console.log(`Github API ${apiString} response for ${queryString} >> `);
       console.log(response);
-      res.status(404).send(response);
+      res.send(response);
     }
   } catch (err) {
     console.log('Error GitHub API called: ', err)
-    res.status(404).send(err);
+    res.status(err.status).send(err);
   }
 }
 
