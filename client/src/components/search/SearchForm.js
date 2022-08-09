@@ -7,8 +7,9 @@ import classes from "./SearchForm.module.css";
 
 function SearchForm(props) {
   const queryRef = useRef();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [searches, setSearches] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     if (query && query.length > 0) {
@@ -22,10 +23,18 @@ function SearchForm(props) {
 
   const autocompleteSearch = async (q) => {
     if (!searches.includes(q)) {
-      const response = await queryFetch(q);
-      props.onSearchSuccess(response);
-      const _searches = [...searches, q];
-      setSearches(_searches);
+      try {
+        const response = await queryFetch(q);
+        props.onSearchSuccess(response);
+        const _searches = [...searches, q];
+        setSearches(_searches);
+      } catch (err) {
+        // Todo: validate credentials to Github
+        console.log("ERROR FROM API >>>\n", err)
+        console.log("ERR STATUS:", err.response.status);
+        console.log("ERR MSG:", err.response.data.response.data.message);
+        setErrorMsg(`GET API Error Status: ${err.response.status} - ${err.response.data.response.data.message}`);
+      }
     }
   };
 
@@ -57,12 +66,8 @@ function SearchForm(props) {
       if (err.response.status === 403) {
         props.onTokenExpired(true);
       } else {
-        // Todo: validate credentials to Github
-        console.log(err.response.data)
-        console.log("ERROR search query >>> ", err.response.data);
-        return null;
+        throw err;
       }
-      
     }
   };
 
@@ -117,6 +122,7 @@ function SearchForm(props) {
           />
         </div>
         {searches && searches.length > 0 ? showList(searches) : null}
+        {errorMsg.length > 0 ? errorMsg : null}
         <div className={classes.actions}>
           <button onClick={clearQueryHandler}>Clear All</button>
           <button onClick={submitHandler}>Search</button>

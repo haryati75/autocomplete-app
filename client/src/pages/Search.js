@@ -45,7 +45,7 @@ function SearchPage() {
         onReset={resetHandler}/>
       {isEmptyResult ? <h3>No users found with the criteria!</h3> : null}
       {isRateLimitReached ? <h3>GitHub rate-limit reached! Wait a few seconds before next search.</h3> : null}
-      <ResultList items={loadedResults}/>
+      {loadedResults?.length > 0 ? <ResultList items={loadedResults}/> : null}
     </section>
   );
 }
