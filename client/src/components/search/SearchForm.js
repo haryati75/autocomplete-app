@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { debounce } from "throttle-debounce";
 import axios from "axios";
 
@@ -9,10 +9,11 @@ function SearchForm(props) {
   const queryRef = useRef();
   const [query, setQuery] = useState('');
   const [searches, setSearches] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    if (query && query.length > 0) {
+    if (query?.length > 0) {
       debounceAutocompleteHandler(query); 
     }
   }, [query]);
@@ -24,24 +25,30 @@ function SearchForm(props) {
   const autocompleteSearch = async (q) => {
     if (!searches.includes(q)) {
       try {
+        setIsFetching(true);
+        setErrorMsg('');
         const response = await queryFetch(q);
         props.onSearchSuccess(response);
+        setIsFetching(false);
         const _searches = [...searches, q];
         setSearches(_searches);
       } catch (err) {
-        // Todo: validate credentials to Github
-        console.log("ERROR FROM API >>>\n", err)
-        console.log("ERR STATUS:", err.response.status);
-        console.log("ERR MSG:", err.response.data.response.data.message);
-        setErrorMsg(`GET API Error Status: ${err.response.status} - ${err.response.data.response.data.message}`);
+        // console.log("ERROR FROM API >>>\n", err)
+        // console.log("ERR STATUS:", err.response.status);
+        // console.log("ERR MSG:", err.response.data.response.data.message);
+        setErrorMsg(`API Error (${err.response.status}): ${err.response.data.response.data.message}`);
       }
     }
   };
 
-  const debounceAutocompleteHandler = useCallback(
-    debounce(300, autocompleteSearch),
-    []
-  );
+  // const debounceAutocompleteHandler = useCallback(
+  //   debounce(300, autocompleteSearch),
+  //   []
+  // );
+
+  const debounceAutocompleteHandler = useMemo(
+    () => debounce(300, autocompleteSearch)
+  , []);
 
   // stop debounced calls after unmounting
   useEffect(() => {
@@ -85,8 +92,9 @@ function SearchForm(props) {
 
   const clearQueryHandler = (event) => {
     event.preventDefault();
-    setQuery("");
+    setQuery('');
     setSearches([]);
+    setErrorMsg('');
     props.onReset();
   };
 
@@ -96,9 +104,7 @@ function SearchForm(props) {
         <p>Autocompleting...</p>
         <hr />
         <ol className={classes.nonumber}>
-          {list.map((s, i) => (
-            <li key={s + i}>{s}</li>
-          ))}
+          {list.map((s, i) => <li key={s + i}>{s}</li>)}
         </ol>
       </div>
     );
@@ -121,8 +127,8 @@ function SearchForm(props) {
             ref={queryRef}
           />
         </div>
-        {searches && searches.length > 0 ? showList(searches) : null}
-        {errorMsg.length > 0 ? errorMsg : null}
+        {isFetching && searches?.length > 0 ? showList(searches) : null}
+        {errorMsg.length > 0 ? <p className={classes['error-message']}>{errorMsg}</p>  : null}
         <div className={classes.actions}>
           <button onClick={clearQueryHandler}>Clear All</button>
           <button onClick={submitHandler}>Search</button>

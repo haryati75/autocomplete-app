@@ -11,11 +11,7 @@ function SearchPage() {
 
   const loadResultHandler = (result) => {
     setLoadedResults(result);
-    if (result && result.length === 0) {
-      setIsEmptyResult(true);
-    } else {
-      setIsEmptyResult(false);
-    }
+    setIsEmptyResult(result?.length === 0);
   }
 
   const expiredTokenHandler = (isExpired) => {
